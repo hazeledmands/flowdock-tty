@@ -81,9 +81,6 @@ var SplitPanel = function(options) {
 };
 _.extend(SplitPanel.prototype, Panel.prototype);
 
-SplitPanel.prototype.onResize = function() {
-};
-
 SplitPanel.prototype.render = function() {
   this.topSplit.render();
   this.bottomSplit.render();
