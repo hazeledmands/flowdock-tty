@@ -2,14 +2,23 @@ var _ = require('underscore');
 var events = require('events');
 var clc = require('cli-color');
 
-var Panel = function(parent, width, height) {
+var Panel = function(options) {
+  options = _.defaults(options, {
+    offsetX: 0,
+    offsetY: 0
+  });
   events.EventEmitter.call(this);
-  this.parent = parent;
-  this.width = width;
-  this.height = height;
+  _.extend(this, options);
   this.on('resize', _.bind(Panel.prototype.onResize, this));
 };
 _.extend(Panel.prototype, events.EventEmitter.prototype);
+
+Panel.prototype.add = function(child) {
+  this.child = child;
+  child.parent = this;
+  child.width = this.width;
+  child.height = this.height;
+};
 
 Panel.prototype.updateSize = function(width, height) {
   var oldWidth = this.width,
@@ -34,27 +43,41 @@ Panel.prototype.render = function() {
   }
 };
 
-Panel.prototype.draw = function(string, x, y) {
-  this.parent.draw(string, x, y);
+Panel.prototype.write = function(string) {
+  this.parent.write(string);
+};
+
+Panel.prototype.placeCursor = function(x, y) {
+  this.parent.placeCursor(this.offsetX + x, this.offsetY + y);
 };
 
 Panel.prototype.split = function(bottomHeight) {
-  this.child = new SplitPanel(this, this.width, this.height, bottomHeight);
+  this.child = new SplitPanel({
+    parent: this,
+    width: this.width,
+    height: this.height,
+    bottomHeight: bottomHeight
+  });
+  return this.child;
 };
 
 exports.Panel = Panel;
 
-var SplitPanel = function(parent, width, height, bottomHeight) {
-  var bottomHeight;
-
-  Panel.call(this, parent, width, height);
-  this.bottomHeight = bottomHeight;
-
-  bottomHeight = this.bottomHeight || Math.floor(height / 2);
-  this.barY = height - (bottomHeight + 1);
-  this.topSplit = new Panel(this, width, this.barHeight);
-  this.bottomSplit = new Panel(this, width, bottomHeight);
-
+var SplitPanel = function(options) {
+  Panel.call(this, options);
+  bottomHeight = this.bottomHeight || Math.floor(this.height / 2);
+  this.barY = this.height - (bottomHeight + 1);
+  this.topSplit = new Panel({
+    parent: this,
+    width: this.width,
+    height: this.barY
+  });
+  this.bottomSplit = new Panel({
+    parent: this,
+    width: this.width,
+    height: bottomHeight,
+    offsetY: (this.barY + 1)
+  });
 };
 _.extend(SplitPanel.prototype, Panel.prototype);
 
@@ -64,31 +87,38 @@ SplitPanel.prototype.onResize = function() {
 SplitPanel.prototype.render = function() {
   this.topSplit.render();
   this.bottomSplit.render();
-  this.drawBar();
+  this.renderBar();
 };
 
-SplitPanel.prototype.drawBar = function() {
+SplitPanel.prototype.renderBar = function() {
   var spaces = '';
   _.times(this.width, function() { spaces += '-'; });
-  this.draw(clc.bgYellow(spaces), 0, this.barY);
+  this.placeCursor(0, this.barY);
+  this.write(clc.bgYellow(spaces));
 };
 
 exports.SplitPanel = SplitPanel;
 
 var TTYPanel = function(tty) {
-  Panel.call(this, tty, tty.columns, tty.rows);
-  this.tty = tty;
+  Panel.call(this, {
+    tty: tty,
+    width: tty.columns,
+    height: tty.rows
+  });
   tty.on('resize', _.bind(this.updateSizeFromTTY, this));
 };
 _.extend(TTYPanel.prototype, Panel.prototype);
 
 TTYPanel.prototype.updateSizeFromTTY = function() {
-  this.updateSize(this.parent.width, this.parent.height);
+  this.updateSize(this.tty.width, this.tty.height);
 };
 
-TTYPanel.prototype.draw = function(string, x, y) {
-  this.tty.write(clc.moveTo(x,y));
+TTYPanel.prototype.write = function(string) {
   this.tty.write(string);
+};
+
+TTYPanel.prototype.placeCursor = function(x, y) {
+  this.tty.write(clc.moveTo(x,y));
 };
 
 TTYPanel.prototype.render = function() {
