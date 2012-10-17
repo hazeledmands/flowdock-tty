@@ -6,4 +6,4 @@ var LogPanel = function(options) {
 };
 _.extend(LogPanel.prototype, panels.Panel.prototype);
 
-module.exports = LogPanel;
+exports.LogPanel = LogPanel;

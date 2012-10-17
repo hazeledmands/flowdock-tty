@@ -1,9 +1,12 @@
 var panels = require('./panels');
-var CommanderPanel = require('./commander_panel.js');
+var logPanels = require('./log_panels');
+var commanderPanels = require('./commander_panels');
 
 var ttyPanel = new panels.TTYPanel(process.stdout);
 var splitPanel = ttyPanel.split(5);
-var commanderPanel = new CommanderPanel({ inputStream: process.stdin });
+var logPanel = new logPanels.LogPanel();
+var commanderPanel = new commanderPanels.CommanderPanel({ inputStream: process.stdin });
+splitPanel.topSplit.add(logPanel);
 splitPanel.bottomSplit.add(commanderPanel);
 ttyPanel.render();
 

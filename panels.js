@@ -3,7 +3,7 @@ var events = require('events');
 var clc = require('cli-color');
 
 var Panel = function(options) {
-  options = _.defaults(options, {
+  options = _.defaults(options || {}, {
     offsetX: 0,
     offsetY: 0
   });

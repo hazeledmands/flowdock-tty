@@ -37,4 +37,4 @@ CommanderPanel.prototype.render = function() {
   this.write(this.prompt + this.buffer);
 };
 
-module.exports = CommanderPanel;
+exports.CommanderPanel = CommanderPanel;
