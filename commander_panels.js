@@ -56,6 +56,7 @@ CommanderPanel.prototype.render = function() {
 };
 
 CommanderPanel.prototype.commandComplete = function() {
+  this.emit('command', this.buffer);
   this.buffer = '';
   this.clear();
   this.render();
