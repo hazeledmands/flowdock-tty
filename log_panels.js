@@ -10,9 +10,10 @@ var LogPanel = function(options) {
 _.extend(LogPanel.prototype, panels.Panel.prototype);
 
 LogPanel.prototype.add = function(child) {
-  this.children.push(child);
+  this.children.unshift(child);
   child.parent = this;
   child.width = this.width;
+  this.render();
 };
 
 LogPanel.prototype.render = function() {
