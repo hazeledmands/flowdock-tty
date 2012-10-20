@@ -26,9 +26,12 @@ process.stdin.on('keypress', function(chunk, key) {
   text += "\n";
 
   log.write(text);
-  logPanel.add(new logPanels.TextItemPanel({ text: text }));
   if (key && key.ctrl && key.name == 'c') {
     process.exit();
   }
 });
 
+
+commanderPanel.on('command', function(command) {
+  logPanel.add(new logPanels.TextItemPanel({ text: command }));
+});
