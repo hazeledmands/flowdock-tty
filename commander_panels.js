@@ -21,12 +21,26 @@ CommanderPanel.prototype.onKeypress = function(chunk, key) {
   if(key.name === "enter") {
     return this.commandComplete();
   }
+  if(key.name === "backspace") {
+    if(this.buffer.length > 0) {
+      this.buffer = this.buffer.slice(0, -1);
+      this.cursorX -= 1;
+      this.replaceCursor();
+      this.write(' ');
+      this.replaceCursor();
+    }
+    return;
+  }
   if(chunk) {
     this.buffer += chunk;
-    this.placeCursor(this.cursorX, this.cursorY);
+    this.replaceCursor();
     this.write(chunk);
     this.cursorX += chunk.length;
   }
+};
+
+CommanderPanel.prototype.replaceCursor = function() {
+  this.placeCursor(this.cursorX, this.cursorY);
 };
 
 CommanderPanel.prototype.resetCursor = function() {
