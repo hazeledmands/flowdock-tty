@@ -22,7 +22,7 @@ keypress(process.stdin);
 process.stdin.on('keypress', function(chunk, key) {
   var text = 'key: ' + JSON.stringify(key);
   text += ' chunk: ' + chunk;
-  text += ' chunk length: ' + chunk.length;
+  if(chunk) text += ' chunk length: ' + chunk.length;
   text += "\n";
 
   log.write(text);
