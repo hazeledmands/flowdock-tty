@@ -42,6 +42,7 @@ TextItemPanel.prototype.recalculateHeight = function() {
 };
 
 TextItemPanel.prototype.render = function() {
+  this.clear();
   this.placeCursor(0,0);
   this.write(this.text);
 };
