@@ -18,18 +18,20 @@ _.extend(CommanderPanel.prototype, panels.Panel.prototype);
 
 CommanderPanel.prototype.onKeypress = function(chunk, key) {
   if(!this.focused) return;
-  if(key.name === "enter") {
-    return this.commandComplete();
-  }
-  if(key.name === "backspace") {
-    if(this.buffer.length > 0) {
-      this.buffer = this.buffer.slice(0, -1);
-      this.cursorX -= 1;
-      this.replaceCursor();
-      this.write(' ');
-      this.replaceCursor();
+  if(key) {
+    if(key.name === "enter") {
+      return this.commandComplete();
     }
-    return;
+    if(key.name === "backspace") {
+      if(this.buffer.length > 0) {
+        this.buffer = this.buffer.slice(0, -1);
+        this.cursorX -= 1;
+        this.replaceCursor();
+        this.write(' ');
+        this.replaceCursor();
+      }
+      return;
+    }
   }
   if(chunk) {
     this.buffer += chunk;
