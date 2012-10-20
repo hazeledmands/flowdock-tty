@@ -47,6 +47,21 @@ Panel.prototype.write = function(string) {
   this.parent.write(string);
 };
 
+Panel.prototype.clear = function() {
+  var spaces = this.fullHorizontalSpaceString();
+  _.times(this.height, function(index) {
+    this.placeCursor(0, index);
+    this.write(spaces);
+  }, this);
+};
+
+Panel.prototype.fullHorizontalSpaceString = function(spaceCharacter) {
+  var spaces = '';
+  spaceCharacter = spaceCharacter || ' ';
+  _.times(this.width, function() { spaces += spaceCharacter; });
+  return spaces;
+};
+
 Panel.prototype.placeCursor = function(x, y) {
   this.parent.placeCursor(this.offsetX + x, this.offsetY + y);
 };
@@ -88,10 +103,9 @@ SplitPanel.prototype.render = function() {
 };
 
 SplitPanel.prototype.renderBar = function() {
-  var spaces = '';
-  _.times(this.width, function() { spaces += '-'; });
+  var spaces = this.fullHorizontalSpaceString('-');
   this.placeCursor(0, this.barY);
-  this.write(clc.bgYellow(spaces));
+  this.write(clc.bgBlue(spaces));
 };
 
 exports.SplitPanel = SplitPanel;
