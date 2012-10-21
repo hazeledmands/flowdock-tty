@@ -7,9 +7,8 @@ var logger = require('./debug_logger');
 
 var ttyPanel = new panels.TTYPanel(process.stdout);
 var splitPanel = ttyPanel.split(5);
-var logPanel = new logPanels.LogPanel();
-var commanderPanel = new commanderPanels.CommanderPanel({ inputStream: process.stdin });
-
+var logPanel = new logPanels.LogPanel({ name: 'output' });
+var commanderPanel = new commanderPanels.CommanderPanel({ inputStream: process.stdin, name: 'input' });
 
 splitPanel.topSplit.add(logPanel);
 splitPanel.bottomSplit.add(commanderPanel);

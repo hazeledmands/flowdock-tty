@@ -9,6 +9,10 @@ var LogPanel = function(options) {
 };
 _.extend(LogPanel.prototype, panels.Panel.prototype);
 
+LogPanel.prototype.getPanelType = function() {
+  return 'log';
+};
+
 LogPanel.prototype.add = function(child) {
   this.children.unshift(child);
   child.parent = this;
@@ -32,6 +36,10 @@ var TextItemPanel = function(options) {
   panels.Panel.call(this, options);
 }
 _.extend(TextItemPanel.prototype, panels.Panel.prototype);
+
+TextItemPanel.prototype.getPanelType = function() {
+  return 'textItem';
+};
 
 TextItemPanel.prototype.recalculateHeight = function() {
   if(this.text && this.width) {

@@ -17,6 +17,10 @@ var CommanderPanel = function(options) {
 };
 _.extend(CommanderPanel.prototype, panels.Panel.prototype);
 
+CommanderPanel.prototype.getPanelType = function() {
+  return 'commander';
+};
+
 CommanderPanel.prototype.onKeypress = function(chunk, key) {
   if(!this.focused) return;
   if(key) {

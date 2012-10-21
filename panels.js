@@ -3,16 +3,24 @@ var events = require('events');
 var clc = require('cli-color');
 var logger = require('./debug_logger');
 
+var nextPanelId = 0;
+
 var Panel = function(options) {
   options = _.defaults(options || {}, {
     offsetX: 0,
-    offsetY: 0
+    offsetY: 0,
+    name: this.getPanelType() + '_' + (++nextPanelId)
   });
   events.EventEmitter.call(this);
   _.extend(this, options);
   this.on('resize', _.bind(Panel.prototype.onResize, this));
+  logger.debug('created new ' + this.getPanelType() + ' panel named ' + this.name);
 };
 _.extend(Panel.prototype, events.EventEmitter.prototype);
+
+Panel.prototype.getPanelType = function() {
+  return 'basic';
+};
 
 Panel.prototype.add = function(child) {
   this.child = child;
