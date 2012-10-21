@@ -20,6 +20,13 @@ LogPanel.prototype.add = function(child) {
   this.render();
 };
 
+LogPanel.prototype.onResize = function() {
+  _.each(this.children, function(child) {
+    child.updateSize({ width: this.width });
+  });
+  this.render();
+};
+
 LogPanel.prototype.render = function() {
   var currentHeight = this.height;
   _.each(this.children, function(child) {
