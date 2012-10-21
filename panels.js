@@ -105,6 +105,9 @@ var SplitPanel = function(options) {
 };
 _.extend(SplitPanel.prototype, Panel.prototype);
 
+SplitPanel.prototype.getPanelType = function() {
+  return 'split';
+};
 SplitPanel.prototype.render = function() {
   this.topSplit.render();
   this.bottomSplit.render();
@@ -123,11 +126,16 @@ var TTYPanel = function(tty) {
   Panel.call(this, {
     tty: tty,
     width: tty.columns,
-    height: tty.rows
+    height: tty.rows,
+    name: 'ttypanel'
   });
   tty.on('resize', _.bind(this.updateSizeFromTTY, this));
 };
 _.extend(TTYPanel.prototype, Panel.prototype);
+
+TTYPanel.prototype.getPanelType = function() {
+  return 'tty';
+};
 
 TTYPanel.prototype.updateSizeFromTTY = function() {
   this.updateSize(this.tty.width, this.tty.height);
