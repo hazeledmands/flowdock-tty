@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var events = require('events');
 var clc = require('cli-color');
+var logger = require('./debug_logger');
 
 var Panel = function(options) {
   options = _.defaults(options || {}, {

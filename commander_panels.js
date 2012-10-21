@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var keypress = require('keypress');
 var panels = require('./panels');
+var logger = require('./debug_logger');
 
 var CommanderPanel = function(options) {
   options = _.defaults(options, {
