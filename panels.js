@@ -29,19 +29,32 @@ Panel.prototype.add = function(child) {
   child.height = this.height;
 };
 
-Panel.prototype.updateSize = function(width, height) {
+Panel.prototype.updateSize = function(options) {
   var oldWidth = this.width,
-      oldHeight = this.height;
-  this.width = width;
-  this.height = height;
-  if(width !== oldWidth || height !== oldHeight) {
+      oldHeight = this.height,
+      oldX = this.offsetX,
+      oldY = this.offsetY;
+  if (options.width)  this.width = options.width;
+  if (options.height) this.height = options.height;
+  if (options.offsetX) this.offsetX = options.offsetX;
+  if (options.offsetY) this.offsetY = options.offsetY;
+  logger.debug('updating size of ' + this.name + ': (' +
+        'w' + this.width + ', ' +
+        'h' + this.height + ', ' +
+        'x' + this.offsetX + ', ' +
+        'y' + this.offsetY + ')');
+  if(this.width !== oldWidth || this.height !== oldHeight
+     || this.offsetX !== oldX || this.offsetY !== oldY) {
     this.emit('resize');
   }
 };
 
 Panel.prototype.onResize = function() {
   if(this.child) {
-    this.child.updateSize(this.width, this.height);
+    this.child.updateSize({
+      width: this.width,
+      height: this.height
+    });
   }
   this.render();
 };
@@ -138,7 +151,10 @@ TTYPanel.prototype.getPanelType = function() {
 };
 
 TTYPanel.prototype.updateSizeFromTTY = function() {
-  this.updateSize(this.tty.width, this.tty.height);
+  this.updateSize({
+    width: this.tty.columns,
+    height: this.tty.rows
+  });
 };
 
 TTYPanel.prototype.write = function(string) {
