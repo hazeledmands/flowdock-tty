@@ -13,7 +13,7 @@ var Panel = function(options) {
   });
   events.EventEmitter.call(this);
   _.extend(this, options);
-  this.on('resize', _.bind(Panel.prototype.onResize, this));
+  this.on('resize', _.bind(function() { this.onResize(); }, this));
   logger.debug('created new ' + this.getPanelType() + ' panel named ' + this.name);
 };
 _.extend(Panel.prototype, events.EventEmitter.prototype);
