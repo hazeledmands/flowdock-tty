@@ -102,18 +102,16 @@ exports.Panel = Panel;
 
 var SplitPanel = function(options) {
   Panel.call(this, options);
-  bottomHeight = this.bottomHeight || Math.floor(this.height / 2);
-  this.barY = this.height - (bottomHeight + 1);
   this.topSplit = new Panel({
     parent: this,
     width: this.width,
-    height: this.barY
+    height: this.getTopSplitHeight()
   });
   this.bottomSplit = new Panel({
     parent: this,
     width: this.width,
-    height: bottomHeight,
-    offsetY: (this.barY + 1)
+    height: this.getBottomSplitHeight(),
+    offsetY: this.getBottomSplitOffsetY()
   });
 };
 _.extend(SplitPanel.prototype, Panel.prototype);
@@ -121,6 +119,23 @@ _.extend(SplitPanel.prototype, Panel.prototype);
 SplitPanel.prototype.getPanelType = function() {
   return 'split';
 };
+
+SplitPanel.prototype.getTopSplitHeight = function() {
+  return this.getBarY();
+};
+
+SplitPanel.prototype.getBottomSplitHeight = function() {
+  return this.bottomHeight || Math.floor(this.height / 2);
+};
+
+SplitPanel.prototype.getBottomSplitOffsetY = function() {
+  return this.getBarY() + 1;
+};
+
+SplitPanel.prototype.getBarY = function() {
+  return this.height - (this.getBottomSplitHeight() + 1);
+};
+
 SplitPanel.prototype.render = function() {
   this.topSplit.render();
   this.bottomSplit.render();
@@ -129,8 +144,21 @@ SplitPanel.prototype.render = function() {
 
 SplitPanel.prototype.renderBar = function() {
   var spaces = this.fullHorizontalSpaceString('-');
-  this.placeCursor(0, this.barY);
+  this.placeCursor(0, this.getBarY());
   this.write(clc.bgBlue(spaces));
+};
+
+SplitPanel.prototype.onResize = function() {
+  this.topSplit.updateSize({
+    width: this.width,
+    height: this.getTopSplitHeight()
+  });
+  this.bottomSplit.updateSize({
+    width: this.width,
+    height: this.getBottomSplitHeight(),
+    offsetY: this.getBottomSplitOffsetY()
+  });
+  this.renderBar();
 };
 
 exports.SplitPanel = SplitPanel;
