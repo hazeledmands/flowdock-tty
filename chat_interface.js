@@ -10,6 +10,8 @@ var splitPanel = ttyPanel.split(5);
 var logPanel = new logPanels.LogPanel({ name: 'output' });
 var commanderPanel = new commanderPanels.CommanderPanel({ inputStream: process.stdin, name: 'input' });
 
+var textPanels = [];
+
 splitPanel.topSplit.add(logPanel);
 splitPanel.bottomSplit.add(commanderPanel);
 ttyPanel.render();
@@ -27,5 +29,7 @@ process.stdin.on('keypress', function(chunk, key) {
 });
 
 commanderPanel.on('command', function(command) {
-  logPanel.add(new logPanels.TextItemPanel({ text: command }));
+  var textPanel = new logPanels.TextItemPanel({ text: command });
+  textPanels.push(textPanel);
+  logPanel.add(textPanel);
 });
