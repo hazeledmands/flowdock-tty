@@ -21,7 +21,6 @@ process.stdin.resume();
 
 keypress(process.stdin);
 process.stdin.on('keypress', function(chunk, key) {
-  // logger.debug({args: arguments}, "key pressed");
   if (key && key.ctrl && key.name == 'c') {
     logger.debug('quit program');
     process.exit();

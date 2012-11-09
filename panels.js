@@ -14,7 +14,6 @@ var Panel = function(options) {
   events.EventEmitter.call(this);
   _.extend(this, options);
   this.on('resize', _.bind(function() { this.onResize(); }, this));
-  logger.debug('created new ' + this.getPanelType() + ' panel named ' + this.name);
 };
 _.extend(Panel.prototype, events.EventEmitter.prototype);
 
@@ -38,11 +37,7 @@ Panel.prototype.updateSize = function(options) {
   if (options.height) this.height = options.height;
   if (options.offsetX) this.offsetX = options.offsetX;
   if (options.offsetY) this.offsetY = options.offsetY;
-  logger.debug('updating size of ' + this.name + ': (' +
-        'w' + this.width + ', ' +
-        'h' + this.height + ', ' +
-        'x' + this.offsetX + ', ' +
-        'y' + this.offsetY + ')');
+
   if(this.width !== oldWidth || this.height !== oldHeight
      || this.offsetX !== oldX || this.offsetY !== oldY) {
     this.emit('resize');
