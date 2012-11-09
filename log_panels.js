@@ -23,7 +23,7 @@ LogPanel.prototype.add = function(child) {
 LogPanel.prototype.onResize = function() {
   _.each(this.children, function(child) {
     child.updateSize({ width: this.width });
-  });
+  }, this);
   this.render();
 };
 
