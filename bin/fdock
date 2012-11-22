@@ -1,9 +1,11 @@
+#!/usr/bin/env node
+
 var keypress = require('keypress');
 var fs = require('fs');
-var panels = require('./panels');
-var logPanels = require('./log_panels');
-var commanderPanels = require('./commander_panels');
-var logger = require('./debug_logger');
+var panels = require('../lib/panels');
+var logPanels = require('../lib/log_panels');
+var commanderPanels = require('../lib/commander_panels');
+var logger = require('../lib/debug_logger');
 
 var ttyPanel = new panels.TTYPanel(process.stdout);
 var splitPanel = ttyPanel.split(5);

@@ -2,7 +2,7 @@
   "name": "flowdock-tty",
   "version": "0.0.0",
   "description": "A terminal-based chat interface for flowdock.",
-  "main": "chat_interface.js",
+  "bin": {"fdock": "./bin/fdock"},
   "dependencies": {
     "bunyan": "~0.14.5",
     "cli-color": "~0.2.1",
