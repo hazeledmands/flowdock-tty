@@ -12,6 +12,10 @@ var commanderPanel = new commanderPanels.CommanderPanel({ inputStream: process.s
 
 var textPanels = [];
 
+// Go to alt screen with smcup (`infocmp -1 | grep "[sr]mcup"`)
+// \u001b is the same thing as \E (terminal escape)
+process.stdout.write("\u001b[?1049h");
+
 splitPanel.topSplit.add(logPanel);
 splitPanel.bottomSplit.add(commanderPanel);
 ttyPanel.render();
@@ -23,6 +27,8 @@ keypress(process.stdin);
 process.stdin.on('keypress', function(chunk, key) {
   if (key && key.ctrl && key.name == 'c') {
     logger.debug('quit program');
+    // Return from alt screen with rmcup
+    process.stdout.write("\u001b[?1049l");
     process.exit();
   }
 });
