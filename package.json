@@ -1,0 +1,32 @@
+{
+  "name": "flowdock-tty",
+  "version": "0.0.0",
+  "description": "A terminal-based chat interface for flowdock.",
+  "main": "chat_interface.js",
+  "dependencies": {
+    "bunyan": "~0.14.5",
+    "cli-color": "~0.2.1",
+    "keypress": "~0.1.0",
+    "underscore": "~1.4.2",
+    "blessings": "~0.0.0",
+    "flowdock": "~0.4.1",
+    "request": "~2.11.4",
+    "url": "~0.7.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/demands/flowdock-tty.git"
+  },
+  "keywords": [
+    "chat",
+    "flowdock",
+    "terminal"
+  ],
+  "author": "Max Edmands",
+  "license": "BSD",
+  "readmeFilename": "README.md"
+}
