@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 
+var path = require('path');
+var nconf = require('nconf');
+
 var keypress = require('keypress');
-var fs = require('fs');
+var flowdock_api = require('../lib/flowdock-api');
 var panels = require('../lib/panels');
 var logPanels = require('../lib/log_panels');
 var commanderPanels = require('../lib/commander_panels');
@@ -13,6 +16,17 @@ var logPanel = new logPanels.LogPanel({ name: 'output' });
 var commanderPanel = new commanderPanels.CommanderPanel({ inputStream: process.stdin, name: 'input' });
 
 var textPanels = [];
+
+
+// Load flowdock settings...
+(function() {
+  nconf.env();
+  if(nconf.get('FDOCK_CONF')) {
+    nconf.file({ file: nconf.get('FDOCK_CONF') });
+  } else if(nconf.get('HOME')) {
+    nconf.file({ file: path.join(nconf.get('HOME'), '.flowdock.json') });
+  }
+}());
 
 // Go to alt screen with smcup (`infocmp -1 | grep "[sr]mcup"`)
 // \u001b is the same thing as \E (terminal escape)

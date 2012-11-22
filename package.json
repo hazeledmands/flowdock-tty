@@ -4,6 +4,7 @@
   "description": "A terminal-based chat interface for flowdock.",
   "bin": {"fdock": "./bin/fdock"},
   "dependencies": {
+    "nconf": "~0.6.5",
     "bunyan": "~0.14.5",
     "cli-color": "~0.2.1",
     "keypress": "~0.1.0",
